@@ -18,6 +18,7 @@ import {
   FormSectionContent,
   FormSectionLabel,
 } from 'components/ui/Forms'
+import OrganizationBillingMigrationPanel from './OrganizationBillingMigrationPanel'
 
 const GeneralSettings = () => {
   const { app, ui } = useStore()
@@ -31,9 +32,11 @@ const GeneralSettings = () => {
 
   const showCMDK = useFlag('dashboardCmdk')
   const allowCMDKDataOptIn = useFlag('dashboardCmdkDataOptIn')
+  const orgBillingMigrationEnabled = useFlag('orgBillingMigration')
 
   const canUpdateOrganization = checkPermissions(PermissionAction.UPDATE, 'organizations')
   const canDeleteOrganization = checkPermissions(PermissionAction.UPDATE, 'organizations')
+  const canMigrateOrganization = checkPermissions(PermissionAction.UPDATE, 'organizations')
 
   const onUpdateOrganization = async (values: any, { setSubmitting, resetForm }: any) => {
     if (!canUpdateOrganization) {
@@ -186,6 +189,10 @@ const GeneralSettings = () => {
           )
         }}
       </Form>
+
+      {orgBillingMigrationEnabled && canMigrateOrganization && (
+        <OrganizationBillingMigrationPanel />
+      )}
 
       {canDeleteOrganization && <OrganizationDeletePanel />}
     </div>
